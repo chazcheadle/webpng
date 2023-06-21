@@ -33,7 +33,6 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 	defer imageResponse.Body.Close()
-
 	convertedImage, err := webp.Decode(imageResponse.Body)
 	if err != nil {
 		fmt.Println(err)
@@ -46,7 +45,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 	w.Header().Set("Content-Type", "application/octet-stream")
-
+	w.Header().Set("Content-Disposition", `attachment;filename="image"; filename*=UTF-8''image`)
 }
 
 func main() {
