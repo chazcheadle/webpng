@@ -9,18 +9,24 @@ import (
 	"golang.org/x/image/webp"
 )
 
+var imageUrl = ""
+
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
 
-	if r.Method != "POST" {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-	err := r.ParseForm()
-	if err != nil {
-		fmt.Println(err)
+	if r.Method == "POST" {
+		err := r.ParseForm()
+		if err != nil {
+			fmt.Println(err)
+		}
+		imageUrl = r.FormValue("imageUrl")
 	}
 
-	imageUrl := r.FormValue("imageUrl")
+	if r.Method == "GET" {
+		fmt.Println("GET request")
+		imageUrl = r.URL.Query().Get("imageUrl")
+		fmt.Println(imageUrl)
+	}
+
 	fmt.Println("Image URL: " + imageUrl)
 	imageResponse, err := http.Get(imageUrl)
 	if err != nil {
